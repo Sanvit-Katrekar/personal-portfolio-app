@@ -1,0 +1,5 @@
+{"properties": [{
+  "name": "admin.password",
+  "type": "java.lang.String",
+  "description": "Contains the admin password for accessing admin interface for the portfolio website"
+}]}
