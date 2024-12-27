@@ -1,0 +1,9 @@
+spring.jpa.hibernate.ddl-auto=update
+spring.datasource.url=jdbc:mysql://xxxxxxx
+spring.datasource.username=xxxxxxx
+spring.datasource.password=xxxxxxx
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.jpa.show-sql:true
+server.port=8001
+
+
