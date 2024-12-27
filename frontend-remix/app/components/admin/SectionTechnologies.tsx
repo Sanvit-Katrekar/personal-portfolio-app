@@ -16,9 +16,10 @@ import { Button } from "~/components/ui/button";
 import { DeleteIcon, EditIcon, PlusCircleIcon } from "lucide-react";
 import { AddSkillComponent } from "./AddSkillComponent";
 import { useToast } from "~/hooks/use-toast"
+import { EditTechnology } from "./EditTechnology";
+import { DeleteTechnology } from "./DeleteTechnology";
 
 export function SectionTechnologies() {
-    const { toast } = useToast()
     const initialTechnologies = [{
         id: 0,
         skill: "",
@@ -50,48 +51,6 @@ export function SectionTechnologies() {
         return () => clearInterval(interval);
     }, [technologies]);
 
-    const handleEdit = async (technologyId: number) => {
-        const originalTechnology = technologies.find(technology => technology.id === technologyId);
-        const updatedSkill = originalTechnology?.skill;
-        const updatedDescription = prompt("Edit description:", originalTechnology?.description);
-        if (updatedDescription !== null) {
-            try {
-                await axios.put(`${BACKEND_BASE_URL}/skills/${technologyId}`, {
-                    id: technologyId,
-                    skill: updatedSkill,
-                    description: updatedDescription
-                });
-                toast({
-                    title: "Success",
-                    description: "Skill edited successfully!",
-                });
-                setTechnologies(prevTechnologies => {
-                    const newTechnologies = [...prevTechnologies];
-                    const technologyIndex = newTechnologies.findIndex(technology => technology.id === technologyId);
-                    if (technologyIndex !== -1) {
-                        newTechnologies[technologyIndex].description = updatedDescription;
-                    }
-                    return newTechnologies;
-                });
-            } catch (error) {
-                console.error('Error updating technology:', error);
-            }
-        }
-    };
-
-    const handleDelete = async (technologyId: number) => {
-        try {
-            await axios.delete(`${BACKEND_BASE_URL}/skills/${technologyId}`);
-            toast({
-                title: "Success",
-                description: "Skill deleted successfully!",
-            });
-            setTechnologies(prevTechnologies => prevTechnologies.filter(technology => technology.id !== technologyId));
-        } catch (error) {
-            console.error('Error deleting technology:', error);
-        }
-    };
-
     return (
         <Carousel className="w-full max-w-md"
             opts={{
@@ -114,8 +73,8 @@ export function SectionTechnologies() {
                                         <AddSkillComponent />
                                     </div>
                                     <div className="flex justify-center items-center gap-2 mt-4">
-                                        <Button onClick={() => handleEdit(technology.id)}> <EditIcon />Edit</Button>
-                                        <Button onClick={() => handleDelete(technology.id)}><DeleteIcon /> Delete</Button>
+                                         <EditTechnology technologyId={technology.id} technologies={technologies} setTechnologies={setTechnologies}/>
+                                         <DeleteTechnology technologyId={technology.id} technologies={technologies} setTechnologies={setTechnologies}/>
                                     </div>
                                 </> : 
                                 <div className="flex flex-col justify-center items-center gap-5">

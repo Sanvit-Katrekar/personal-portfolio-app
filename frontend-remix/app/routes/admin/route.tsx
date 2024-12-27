@@ -1,7 +1,17 @@
 import { useState, useEffect } from 'react';
 import { CommentsCarousel } from '~/components/admin/CommentsCarousel';
 import { SectionTechnologies } from '~/components/admin/SectionTechnologies';
-import FeedbackForm from '~/components/FeedbackForm';
+
+import { LoaderFunction, redirect } from "@remix-run/node";
+import { getSession } from "~/sessions.server";
+
+export let loader: LoaderFunction = async ({ request }) => {
+  let session = await getSession(request.headers.get("Cookie"));
+  if (!session.has("auth")) {
+    return redirect("/login");
+  }
+  return null;
+};
 
 export default function () {
   const [isAnimating, setIsAnimating] = useState(false);
